@@ -1,4 +1,4 @@
-package com.chancetop.plugin.generator.action;
+package com.neal.plugin.generator.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

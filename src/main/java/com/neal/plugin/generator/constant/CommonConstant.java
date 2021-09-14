@@ -1,4 +1,4 @@
-package com.chancetop.plugin.generator.constant;
+package com.neal.plugin.generator.constant;
 
 /**
  * @author Neal

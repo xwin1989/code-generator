@@ -1,4 +1,4 @@
-package com.chancetop.plugin.generator.util;
+package com.neal.plugin.generator.util;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;

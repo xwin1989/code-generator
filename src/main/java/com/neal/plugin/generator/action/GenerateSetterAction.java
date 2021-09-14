@@ -1,7 +1,7 @@
-package com.chancetop.plugin.generator.action;
+package com.neal.plugin.generator.action;
 
-import com.chancetop.plugin.generator.constant.CommonConstant;
-import com.chancetop.plugin.generator.util.SpiUtil;
+import com.neal.plugin.generator.constant.CommonConstant;
+import com.neal.plugin.generator.util.SpiUtil;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -110,7 +110,7 @@ public class GenerateSetterAction extends PsiElementBaseIntentionAction {
     }
 
     private boolean buildIfNull(StringBuilder builder, PsiField field, String splitText) {
-        if (!field.hasAnnotation("core.framework.api.validate.NotNull")) {
+        if (!field.hasAnnotation("javax.validation.constraints.NotNull")) {
             builder.append("if (").append(SOURCE_NAME).append('.').append(field.getName()).append(" != null){").append(splitText).append("    ");
             return true;
         }

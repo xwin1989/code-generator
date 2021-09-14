@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.neal.plugin.generator</id>
     <name>code-generator</name>
-    <vendor email="nealxu@chancetop.com" url="https://github.com/xwin1989/code-generator">xwin1989</vendor>
+    <vendor email="xwin1989@gmail.com" url="https://github.com/xwin1989/code-generator">Neal</vendor>
 
     <description><![CDATA[
         Simple generate code
@@ -19,15 +19,15 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <intentionAction>
-            <className>com.chancetop.plugin.generator.action.GenerateSetterAction</className>
+            <className>com.neal.plugin.generator.action.GenerateSetterAction</className>
         </intentionAction>
 
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="com.chancetop.plugin.generator.action.GenerateBuilderAction"
-                class="com.chancetop.plugin.generator.action.GenerateBuilderAction"
+        <action id="com.neal.plugin.generator.action.GenerateBuilderAction"
+                class="com.neal.plugin.generator.action.GenerateBuilderAction"
                 text="Generate Class Builder" description="generate class builder">
             <add-to-group group-id="NewGroup" anchor="last"/>
             <add-to-group group-id="JavaGenerateGroup1" anchor="last"/>
