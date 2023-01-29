@@ -1,7 +1,5 @@
 package com.neal.plugin.generator.action;
 
-import com.neal.plugin.generator.constant.CommonConstant;
-import com.neal.plugin.generator.util.SpiUtil;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -17,6 +15,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.IncorrectOperationException;
+import com.neal.plugin.generator.constant.CommonConstant;
+import com.neal.plugin.generator.util.SpiUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -117,15 +117,23 @@ public class GenerateSetterAction extends PsiElementBaseIntentionAction {
         return false;
     }
 
-    private void buildList(StringBuilder builder, PsiField field, String generateName) {
+    private void buildList(StringBuilder builder, PsiField field, String generateName, String splitText) {
         PsiClass genericClass = PsiTypesUtil.getPsiClass(PsiUtil.extractIterableTypeParameter(field.getType(), false));
         String oddName = getOddName(field.getName());
         if (genericClass.isEnum()) {
             builder.append(generateName).append('.').append(field.getName()).append(" = ")
                 .append(SOURCE_NAME).append('.').append(field.getName()).append(".stream().map(").append(oddName).append(" -> ").append(genericClass.getName()).append(".valueOf(").append(oddName).append(".name())).collect(Collectors.toList());");
         } else {
+            String className = PsiUtil.extractIterableTypeParameter(field.getType(), true).getCanonicalText();
+            Pattern pattern = Pattern.compile("\\.([A-Z].*)");
+            Matcher matcher = pattern.matcher(className);
+            if (matcher.find()) className = matcher.group(1);
+            String tabStr = "    ";
+            String fieldName = SpiUtil.lowerFirstCase(className.substring(className.lastIndexOf('.') + 1)) + "View";
             builder.append(generateName).append('.').append(field.getName()).append(" = ")
-                .append(SOURCE_NAME).append('.').append(field.getName()).append(".stream().map(").append(oddName).append(" -> { }).collect(Collectors.toList());");
+                .append(SOURCE_NAME).append('.').append(field.getName()).append(".stream().map(").append(oddName).append(" -> {").append(splitText).append(tabStr)
+                .append(className).append(' ').append(fieldName).append(" = new ").append(className).append("();").append(splitText).append(tabStr).append("return ").append(fieldName).append(';').append(splitText)
+                .append("}).collect(Collectors.toList());");
         }
     }
 
@@ -161,7 +169,7 @@ public class GenerateSetterAction extends PsiElementBaseIntentionAction {
             if (fieldClass.isEnum()) {
                 buildEnum(builder, field, fieldClass, generateName);
             } else if (isList) {
-                buildList(builder, field, generateName);
+                buildList(builder, field, generateName, splitText);
             } else {
                 buildEquals(builder, field, generateName); //class equals
             }
